@@ -1,5 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from .models import Post
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView
+from django.contrib.auth import login
+from django.contrib.auth.views import LoginView
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 def home(request):
     return HttpResponse('<h1>Hello ᓚᘏᗢ</h1>')
@@ -7,15 +15,47 @@ def home(request):
 def about(request):
     return render(request, 'about.html')
 
-class Post:
-    def __init__(self, title, image, description):
-        self.title = title
-        self.image = image
-        self.description = description
-        
-posts = [
-    Post('MOVIE1', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4EIuDx-tBVTI70CWerfKz41XOl5JoTmqo_A&s', 'An insomniac office worker and a devil-may-care soap maker form an underground fight club that evolves into something much, much more.'),
-    Post('MOVIE2', 'https://m.media-amazon.com/images/I/51oD6C1bGDL._AC_SY445_.jpg', 'A ticking-time-bomb insomniac and a slippery soap salesman channel'),
-]
+def post_detail(request, post_id):
+    post = Post.objects.get(id=post_id)
+    return render(request, 'movie/detail.html', {'post': post})
+
+class PostCreate(LoginRequiredMixin, CreateView):
+    model = Post
+    fields = ['title', 'description', 'image']
+    
+class PostUpdate(UpdateView):
+    model = Post
+    fields = ['title', 'description', 'image']
+
+class PostDelete(DeleteView):
+    model = Post
+    success_url = '/movie/'
+    
+class Home(LoginView):
+    template_name = 'home.html'
+
+@login_required 
+
 def movie(request):
+    posts = Post.objects.filter(user=request.user)
     return render(request, 'movie/movie.html', {'posts': posts})
+
+def signup(request):
+    error_message = ''
+    if request.method == 'POST':
+        # This is how to create a 'user' form object
+        # that includes the data from the browser
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            # This will add the user to the database
+            user = form.save()
+            # This is how we log a user in
+            login(request, user)
+            return redirect('cat-index')
+        else:
+            error_message = 'Invalid sign up - try again'
+    # A bad POST or a GET request, so render signup.html with an empty form
+    form = UserCreationForm()
+    context = {'form': form, 'error_message': error_message}
+    return render(request, 'signup.html', context)
+   
