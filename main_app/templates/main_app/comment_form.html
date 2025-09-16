@@ -1,0 +1,25 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/form.css' %}" />
+{% endblock %} 
+{% block content %}
+  <div class="page-header">
+      <h1>Add a Comment</h1>
+  </div>
+  <form action="" method="post" class="form-container" autocomplete="off">
+    {% csrf_token %}
+    <table>
+      {% for field in form %}
+        {% if field.name != 'parent' %}
+          <tr><td>{{ field.label_tag }}</td><td>{{ field }}</td></tr>
+        {% endif %}
+      {% endfor %}
+    </table>
+    {% if form.parent.value %}
+      <input type="hidden" name="parent" value="{{ form.parent.value }}" />
+    {% endif %}
+    <button type="submit" class="btn submit">Submit!</button>
+  </form>
+
+{% endblock %}

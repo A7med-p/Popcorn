@@ -20,6 +20,7 @@
           <li><a href="{% url 'about' %}">About</a></li>
           <li><a href="{% url 'movie' %}">Movie</a></li>
           <li><a href="{% url 'post-create' %}">Add a Post</a></li>
+          <li><a href="{% url 'comment-create' %}">Add Comment</a></li>
           <li>
             <form id="logout-form" method="post" action="{% url 'logout' %}">
               {% csrf_token %}

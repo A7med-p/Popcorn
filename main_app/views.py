@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Post
+from .models import Post, Comment
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
 from django.contrib.auth import login
@@ -17,11 +17,36 @@ def about(request):
 
 def post_detail(request, post_id):
     post = Post.objects.get(id=post_id)
-    return render(request, 'movie/detail.html', {'post': post})
+    comments = Comment.objects.filter(post=post)
+    return render(request, 'movie/detail.html', {'post': post, 'comments': comments})
 
 class PostCreate(LoginRequiredMixin, CreateView):
     model = Post
     fields = ['title', 'description', 'image']
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+    
+
+class CommentCreate(LoginRequiredMixin, CreateView):
+    model = Comment
+    fields = ['post', 'content', 'parent']
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+class CommentReply(LoginRequiredMixin, CreateView):
+    model = Comment
+    fields = ['content']
+    template_name = 'main_app/comment_form.html'
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.post_id = self.kwargs['post_id']
+        form.instance.parent_id = self.kwargs['comment_id']
+        return super().form_valid(form)
     
 class PostUpdate(UpdateView):
     model = Post
@@ -30,6 +55,17 @@ class PostUpdate(UpdateView):
 class PostDelete(DeleteView):
     model = Post
     success_url = '/movie/'
+
+class CommentDelete(LoginRequiredMixin, DeleteView):
+    model = Comment
+    def get_success_url(self):
+        return self.object.post.get_absolute_url()
+
+class CommentUpdate(LoginRequiredMixin, UpdateView):
+    model = Comment
+    fields = ['content']
+    def get_success_url(self):
+        return self.object.post.get_absolute_url()
     
 class Home(LoginView):
     template_name = 'home.html'
@@ -37,7 +73,7 @@ class Home(LoginView):
 @login_required 
 
 def movie(request):
-    posts = Post.objects.filter(user=request.user)
+    posts = Post.objects.all()
     return render(request, 'movie/movie.html', {'posts': posts})
 
 def signup(request):

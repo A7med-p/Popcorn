@@ -1,86 +1,110 @@
+body {
+  background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 main {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
-  height: 100%;
+  min-height: 80vh;
 }
 
 main > section {
   width: 100%;
-  padding: 10px 8px;
+  max-width: 400px;
+  padding: 24px 18px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-}
-
-.header-logo-container {
-  display: none;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(36,116,248,0.12);
+  border: 1px solid #e3eafc;
 }
 
 .logo-container {
-  max-width: 375px;
-}
-
-.cat-container {
-  width: 80%;
+  max-width: 120px;
+  margin-bottom: 24px;
 }
 
 .login {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  width: 80%;
+  align-items: stretch;
+  width: 100%;
 }
 
 .login h1 {
-  font-size: clamp(3.2rem, 3vw, 4.8rem);
-  margin: 10px 0;
+  font-size: 2.8rem;
+  margin: 0 0 18px 0;
+  text-align: center;
+  color: #2454f8;
+  font-weight: 700;
 }
 
 .login > p {
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin: 14px 0 0px;
+  margin: 12px 0 0px;
 }
 
 .login label {
-  font-size: var(--font-reg);
+  font-size: 1.4rem;
   margin-bottom: 6px;
+  color: #333;
 }
 
 .login input {
-  font-size: var(--font-l);
-  padding: 2px 4px;
+  font-size: 1.6rem;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #bcd0ee;
+  margin-bottom: 12px;
+  background: #f7fafd;
+  transition: border-color 0.2s;
+}
+
+.login input:focus {
+  border-color: #2454f8;
+  outline: none;
 }
 
 .login .btn {
-  align-self: flex-end;
-  margin-right: 0;
-  margin-top: 16px;
+  align-self: stretch;
+  margin-top: 18px;
+  background: #2454f8;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 0;
+  font-size: 1.6rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(36,116,248,0.08);
+  transition: background 0.2s;
+}
+
+.login .btn:hover {
+  background: #163b8e;
 }
 
 @media only screen and (min-width: 768px) {
   main {
-    justify-content: space-around;
+    justify-content: center;
   }
-
   main > section {
-    width: 40%;
+    max-width: 420px;
+    padding: 32px 28px;
   }
-
-  .login {
-    border: var(--borders);
-    padding: 20px;
-    border-radius: var(--card-border-radius);
-    box-shadow: var(--card-box-shadow);
-    width: 100%;
-  }
-
   .logo-container {
-    max-width: 520px;
+    max-width: 180px;
   }
 }

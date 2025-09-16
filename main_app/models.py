@@ -7,7 +7,7 @@ class Post(models.Model):
     description = models.TextField(blank=True, null=True)
     image = models.URLField(max_length=500)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    
+
     def __str__(self):
         return self.title
     def get_absolute_url(self):
@@ -16,8 +16,12 @@ class Post(models.Model):
     
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    parent = models.ForeignKey('self', null=True, blank=True, related_name='replies', on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Comment by {self.user.username} on {self.post.title}"
+    def get_absolute_url(self):
+        return reverse('post-detail', kwargs={'post_id': self.post.id})

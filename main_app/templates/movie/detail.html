@@ -10,9 +10,31 @@
     <img src="{{ post.image }}" alt="{{ post.title }}" class="post-image" />
     <p>{{ post.description }}</p>
     <div class="cat-actions">
-    <a href="{% url 'post-update' post.id %}" class="btn warn">Edit</a>
-    <a href="{% url 'post-delete' post.id %}" class="btn danger">Delete</a>
+      {% if user.is_authenticated and post.user == user %}
+        <a href="{% url 'post-update' post.id %}" class="btn warn">Edit</a>
+        <a href="{% url 'post-delete' post.id %}" class="btn danger">Delete</a>
+      {% endif %}
     </div>
   </div>
 </section>
+
+<div>
+    <h2>Comments</h2>
+    <ul class="comment-list">
+      {% for comment in comments %}
+        {% if not comment.parent %}
+          {% include "main_app/comment_item.html" with comment=comment post=post user=user %}
+        {% endif %}
+      {% empty %}
+        <li>No comments yet.</li>
+      {% endfor %}
+    </ul>
+
+    <h3>Add a Comment</h3>
+    <form action="{% url 'comment-create'%}" method="post" class="comment-form">
+      {% csrf_token %}
+      {{ comment_form.as_p }}
+      <button type="submit" class="btn submit">Submit Comment</button>
+    </form>
+  </div>
 {% endblock %}
