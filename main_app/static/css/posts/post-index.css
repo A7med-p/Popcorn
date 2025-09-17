@@ -1,16 +1,78 @@
+/* Profile Page Styles */
+.profile-container {
+  max-width: 900px;
+  margin: 32px auto;
+  background: #23243a;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px #2454f8;
+  padding: 32px 36px 24px 36px;
+  border: 1px solid #2d2e4a;
+}
+
+.profile-header {
+  text-align: center;
+  margin-bottom: 18px;
+}
+.profile-header h1 {
+  font-size: 2.8rem;
+  color: #7f9cf5;
+  font-weight: 700;
+  margin: 0;
+}
+/* Search Bar Styles */
+.search-form {
+  margin: 24px 0;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.search-input {
+  padding: 8px 16px;
+  font-size: 1.4rem;
+  border-radius: 6px;
+  border: 1px solid #7f9cf5;
+  width: 240px;
+  background: #23243a;
+  color: #e0eafc;
+  transition: border-color 0.2s;
+}
+
+.search-input:focus {
+  border-color: #2454f8;
+  outline: none;
+}
+
+.search-btn {
+  margin-left: 0;
+  padding: 8px 18px;
+  font-size: 1.4rem;
+  background: #2454f8;
+  color: #fff;
+  border-radius: 6px;
+  border: none;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+.search-btn:hover {
+  background: #7f9cf5;
+  color: #23243a;
+}
 .card-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 32px;
   padding: 40px 20px;
   justify-items: center;
-  background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 100%);
+  background: none;
 }
 
 .card {
-  background: #fff;
+  background: #23243a;
   border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(36,116,248,0.10);
+  box-shadow: 0 8px 32px rgba(36,116,248,0.18);
   overflow: hidden;
   transition: transform 0.18s, box-shadow 0.18s;
   width: 100%;
@@ -18,11 +80,13 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  border: 1px solid #2d2e4a;
 }
 
 .card:hover {
   transform: translateY(-6px) scale(1.03);
-  box-shadow: 0 12px 36px rgba(36,116,248,0.18);
+  box-shadow: 0 12px 36px #2454f8;
+  border-color: #2454f8;
 }
 
 .card-content {
@@ -35,7 +99,7 @@
 .card-title {
   font-size: 2.2rem;
   font-weight: 700;
-  color: #2454f8;
+  color: #7f9cf5;
   margin: 0 0 12px 0;
   text-align: center;
 }
@@ -44,14 +108,14 @@
   width: 100%;
   max-width: 220px;
   border-radius: 10px;
-  box-shadow: 0 2px 12px rgba(36,116,248,0.08);
+  box-shadow: 0 2px 12px #2454f8;
   margin-bottom: 14px;
   object-fit: cover;
 }
 
 .card-content p {
-  font-size: 1.4rem;
-  color: #333;
+  font-size: 1.7rem;
+  color: #e0eafc;
   margin: 0;
   text-align: center;
 }
@@ -97,10 +161,10 @@
 
 .card h2 {
   margin: 10px 0;
-  font-size: var(--font-xl);
+  /* font-size: var(--font-xl); */
 }
 
 .card p {
   margin: 5px 0;
-  font-size: var(--font-reg);
+  /* font-size: var(--font-reg); */
 }

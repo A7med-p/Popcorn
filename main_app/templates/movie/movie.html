@@ -4,6 +4,12 @@
   href="{% static 'css/posts/post-index.css' %}"
 />
 {% endblock %} {% block content %}
+
+<form method="get" action="" class="search-form">
+  <input type="text" name="q" class="search-input" placeholder="Search posts..." value="{{ request.GET.q|default:'' }}">
+  <button type="submit" class="btn submit search-btn">Search</button>
+</form>
+
 <section class="card-container">
   {% for post in posts %}
     <div class="card">
@@ -15,6 +21,8 @@
         </div>
       </a>
     </div>
+  {% empty %}
+    <p>No posts found.</p>
   {% endfor %}
 </section>
 

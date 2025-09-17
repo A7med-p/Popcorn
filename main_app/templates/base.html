@@ -6,7 +6,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="shortcut icon" type="image/png" href="{% static 'images/batman.png' }" />
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/logo.png' %}" />
     <link rel="stylesheet" href="{% static 'css/base.css' %}" />
     <title>Home</title>
     {% block head %} 
@@ -14,10 +14,16 @@
   </head>
   <body>
     <header>
+      <div class="">
+        <a href="/movie">
+          <img src="{% static 'images/logo.png' %}" alt="Logo" class="header-logo" />
+        </a>
+      </div>
       <nav>
         <ul>
           {% if user.is_authenticated %}
           <li><a href="{% url 'about' %}">About</a></li>
+          <li><a href="{% url 'profile' user.username %}">Profile</a></li>
           <li><a href="{% url 'movie' %}">Movie</a></li>
           <li><a href="{% url 'post-create' %}">Add a Post</a></li>
           <li><a href="{% url 'comment-create' %}">Add Comment</a></li>
@@ -36,8 +42,7 @@
       </nav>
     </header>
     <main>
-     {% block content %} 
-     {% endblock %}
-     </main>
+      {% block content %}{% endblock %}
+    </main>
   </body>
 </html>

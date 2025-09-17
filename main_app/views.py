@@ -1,6 +1,8 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Post, Comment
+from django.db.models import Q
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
 from django.contrib.auth import login
@@ -19,6 +21,11 @@ def post_detail(request, post_id):
     post = Post.objects.get(id=post_id)
     comments = Comment.objects.filter(post=post)
     return render(request, 'movie/detail.html', {'post': post, 'comments': comments})
+
+def profile(request, username):
+    user_obj = User.objects.get(username=username)
+    posts = Post.objects.filter(user=user_obj)
+    return render(request, 'main_app/profile.html', {'profile_user': user_obj, 'posts': posts})
 
 class PostCreate(LoginRequiredMixin, CreateView):
     model = Post
@@ -73,7 +80,14 @@ class Home(LoginView):
 @login_required 
 
 def movie(request):
-    posts = Post.objects.all()
+    query = request.GET.get('q', '').strip()
+    if query:
+        posts = Post.objects.filter(
+            Q(title__icontains=query) |
+            Q(description__icontains=query)
+        )
+    else:
+        posts = Post.objects.all()
     return render(request, 'movie/movie.html', {'posts': posts})
 
 def signup(request):
@@ -87,7 +101,7 @@ def signup(request):
             user = form.save()
             # This is how we log a user in
             login(request, user)
-            return redirect('cat-index')
+            return redirect('movie')
         else:
             error_message = 'Invalid sign up - try again'
     # A bad POST or a GET request, so render signup.html with an empty form
